@@ -1,6 +1,7 @@
-#!/bin/env bash
-if [ $(ps -aux | grep [p]icom | wc -l) -eq "0" ]; then
-	picom --config $HOME/.config/picom/picom.conf &
+#!/bin/bash
+pgrep -l "picom"
+if [ $? -eq "0" ]; then
+    pkill -9 picom
 else 
-	pkill -9 picom
+    picom --config $HOME/.config/picom/picom.conf &
 fi
