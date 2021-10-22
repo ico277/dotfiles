@@ -12,6 +12,8 @@ do
         "nvim" | "neovim" | "vim" | "nvim/vim" | "4")
             echo "-> cp vimrc ~/.vimrc"
             cp vimrc ~/.vimrc
+            echo "-> cp -r nvim/ ~/.config/"
+            cp -r nvim/ ~/.config/
         ;;
 
         "i3" | "0")
