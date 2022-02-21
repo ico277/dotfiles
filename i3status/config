@@ -1,13 +1,14 @@
 general {
-        output_format 	=	"i3bar"
-        colors		= 	true
-        interval	= 	5
+    output_format 	=	"i3bar"
+    colors		= 	true
+    interval	= 	5
 	color_good	=	"#00FF00"
 	color_degraded	=	"#FF6A00"
 	color_bad	=	"#FF0000"
 }
 
 #order	+=	"uptime"
+order	+=  "battery 0"
 order	+=	"cpu_usage"
 order	+=	"memory"
 order	+=	"tztime berlin"
@@ -18,9 +19,9 @@ tztime berlin {
 }
 
 memory {
-        format			=	"RAM: %percentage_used %used/%total"
-        threshold_degraded	=	"10%"
-        format_degraded 	=	"MEMORY: %free"
+    format			=	"RAM: %percentage_used %used/%total"
+    threshold_degraded	=	"10%"
+    format_degraded 	=	"MEMORY: %free"
 }
 
 cpu_usage {
@@ -29,5 +30,13 @@ cpu_usage {
 	degraded_threshold	=	"50"
 }
 
-
+battery 0 {
+    format	=	"%percentage %status"
+    format_down	=	"No bat"
+    status_chr	=	"CHR"
+    status_bat	=	"BAT"
+    status_unk	=	"UNK"
+	path	=	"/sys/class/power_supply/BAT0/uevent"
+	low_threshold	=	10
+}
 
