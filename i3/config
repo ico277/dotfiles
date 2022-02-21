@@ -87,10 +87,10 @@ exec_always --no-startup-id /usr/lib/xfce-polkit/xfce-polkit
 exec_always --no-startup-id picom --config $HOME/.config/picom/picom.conf
 
 # Background image
-#add feh here
+exec_always --no_startup-id feh --bg-fill $HOME/.config/i3/wallpaper/red_mountain.png 
 
 # Keybinds
-bindsym $mod+Shift+d exec dmenu_run
+bindsym $mod+Shift+d exec --no-startup-id dmenu_run
 
 bindsym $mod+Return exec --no-startup-id sakura;focus
 bindsym $mod+KP_Enter exec --no-startup-id sakura;focus
@@ -99,10 +99,10 @@ bindsym control+mod1+Return exec --no-startup-id sakura; focus
 bindsym control+mod1+KP_Enter exec --no-startup-id sakura; focus
 bindsym F12 exec --no-startup-id i3-sensible-terminal --drop-down; focus
 bindsym $mod+Shift+s exec --no-startup-id flameshot gui
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
-bindsym $mod+Shift+p exec $HOME/.config/i3/toggle-compositor.sh
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym $mod+Shift+p exec --no-startup-id $HOME/.config/i3/toggle-compositor.sh
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -133,7 +133,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # change focus
 bindsym $mod+j focus left
