@@ -39,6 +39,8 @@ do
         "all" | "5")
             echo "-> cp -r */ ~/.config/"
             cp -r */ ~/.config/
+	    echo "-> cp vimrc ~/.vimrc"
+	    cp vimrc ~/.vimrc
         ;;
 
         *)
