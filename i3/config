@@ -74,7 +74,8 @@ bar {
 		statusline 	  #FF0000
 		focused_workspace #FF0000 #FF0000 #000000
 	}
-        status_command i3status
+    status_command i3status
+    tray_output primary
 }
 
 # Autostart
