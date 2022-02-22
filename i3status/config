@@ -11,7 +11,9 @@ general {
 order	+=  "battery 0"
 order	+=	"cpu_usage"
 order	+=	"memory"
+order   +=  "volume master"
 order	+=	"tztime berlin"
+
 
 tztime berlin {
         format          =       "%d-%m-%y %H:%M:%S"   
@@ -40,3 +42,10 @@ battery 0 {
 	low_threshold	=	10
 }
 
+volume master {
+        format = "Vol: %volume"
+        format_muted = "Vol: muted (%volume)"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
