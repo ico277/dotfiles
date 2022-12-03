@@ -35,7 +35,7 @@ set $bright 10
     bindsym $mod+Shift+d exec $menu
 
     # flameshot
-    bindsym $mod+Shift+s exec --no-startup-id flameshot gui
+    bindsym $mod+Shift+s exec flameshot gui
 
     # backlight
     bindsym XF86MonBrightnessUp exec xbacklight -inc $bright
@@ -91,7 +91,7 @@ set $bright 10
     bindsym $mod+Shift+0 move container to workspace number 10
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
-    
+
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
     # respectively.
@@ -211,7 +211,8 @@ bar {
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    #status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    status_command i3status
 
     colors {
         statusline #ffffff
@@ -219,5 +220,17 @@ bar {
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
 }
+
+#
+# Autostart
+#
+
+# notification daemon
+exec_always killall mako && mako
+# flameshot for screenshots
+exec_always killall flameshot && flameshot
+# blueman for bluetooth
+exec_always killall blueman-applet && blueman-applet
+
 
 include /etc/sway/config.d/*
