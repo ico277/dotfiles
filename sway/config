@@ -265,5 +265,7 @@ exec_always $HOME/.config/sway/scripts/restart.sh mako
 exec_always $HOME/.config/sway/scripts/restart.sh flameshot
 # blueman for bluetooth
 exec_always $HOME/.config/sway/scripts/restart.sh blueman-applet
+# easyeffects
+exec_always $HOME/.config/sway/scripts/restart.sh easyeffects --gapplication-service 
 
 include /etc/sway/config.d/*
