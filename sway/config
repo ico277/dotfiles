@@ -11,6 +11,11 @@ set $term kitty
 set $menu bemenu-run
 # Brightness value
 set $bright 10
+# Colors
+set $color_primary #c413d2
+#set $color_secondary #00213D
+set $color_background #000000
+set $color_foreground #FFFFFF
 
 ### Key bindings
 #
@@ -183,20 +188,29 @@ exec swayidle -w \
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
 
-### Input configuration
-# Mouse
+#
+# Input configuration
+# 
+# Touchpad config
 input type:touchpad {
     dwt enabled
     tap enabled
     natural_scroll enabled
     #middle_emulation enabled
 }
+# Trackpoint config
 input "2:14:ETPS/2_Elantech_TrackPoint" {
     accel_profile flat
     pointer_accel 1
     dwt disabled
 }
-# Keyboard
+# Logitech Mouse config
+input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
+    accel_profile flat
+    pointer_accel -0.4
+    dwt disabled
+}
+# Keyboard layout
 input type:keyboard {
     xkb_layout de
 }
@@ -212,25 +226,44 @@ bar {
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
     #status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    # Use i3status for the status command
     status_command i3status
 
     colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
+        statusline $color_foreground
+        background $color_background
+        inactive_workspace $color_background $color_background $color_foreground
+        focused_workspace $color_primary $color_background $color_foreground
+        # urgent_workspace <border> <background> <text>
+        urgent_workspace #FF0000 $color_background $color_foreground
+        separator $color_primary
     }
 }
 
 #
+# Themes & Colors
+#
+# Window borders
+default_border pixel 1
+for_window [class="^.*"] border pixel 1
+
+# Window gaps
+gaps inner 8
+gaps outer 4
+
+# class                 border  backgr. text    indicator child_border
+client.focused          $color_primary    $color_background $color_foreground $color_primary    $color_primary
+client.focused_inactive $color_background $color_background $color_foreground $color_background $color_background
+client.unfocused        $color_background $color_background $color_foreground $color_background $color_background
+
+#
 # Autostart
 #
-
 # notification daemon
-exec_always killall mako && mako
+exec_always $HOME/.config/sway/scripts/restart.sh mako
 # flameshot for screenshots
-exec_always killall flameshot && flameshot
+exec_always $HOME/.config/sway/scripts/restart.sh flameshot
 # blueman for bluetooth
-exec_always killall blueman-applet && blueman-applet
-
+exec_always $HOME/.config/sway/scripts/restart.sh blueman-applet
 
 include /etc/sway/config.d/*
