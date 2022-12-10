@@ -10,7 +10,7 @@ set $term kitty
 # on the original workspace that the command was run on.
 set $menu bemenu-run
 # Brightness value
-set $bright 10
+set $bright 5%
 # Colors
 set $color_primary #c413d2
 #set $color_secondary #00213D
@@ -43,8 +43,8 @@ set $color_foreground #FFFFFF
     bindsym $mod+Shift+s exec flameshot gui
 
     # backlight
-    bindsym XF86MonBrightnessUp exec xbacklight -inc $bright
-    bindsym XF86MonBrightnessDown exec xbacklight -dec $bright
+    bindsym XF86MonBrightnessUp exec brightnessctl set +$bright
+    bindsym XF86MonBrightnessDown exec brightnessctl set $bright-
 
 #
 # Window Management
@@ -171,9 +171,10 @@ output * bg $HOME/.config/sway/wallpaper/wallpaper.png fill
 #
 # Example configuration:
 #
-output eDP-1 resolution 1920x1080 scale 1.20
-output DP-3 resolution 1920x1080 position 1920,0
-output DP-2 resolution 1920x1080 adaptive_sync on
+output eDP-1 resolution 1920x1080@60hz scale 1.20
+output HDMI-A-1 modeline 210.25 1920 2056 2256 2592  1080 1083 1088 1128 -hsync +vsync 
+output DP-3 resolution 1920x1080@60hz position 1920,0
+output DP-2 resolution 1920x1080@144hz adaptive_sync on
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -203,13 +204,14 @@ input type:touchpad {
 # Trackpoint config
 input "2:14:ETPS/2_Elantech_TrackPoint" {
     accel_profile flat
+#    pointer_accel 0.6
     pointer_accel 1
     dwt disabled
 }
 # Logitech Mouse config
 input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
     accel_profile flat
-    pointer_accel -0.4
+    pointer_accel -0.2
     dwt disabled
 }
 # Other Logitech Mouse config
@@ -223,6 +225,24 @@ input type:keyboard {
     xkb_layout de
 }
 
+#
+# Themes & Colors
+#
+# Window borders
+default_border pixel 1
+for_window [class="^.*"] border pixel 1
+
+# Window gaps
+gaps inner 8
+gaps outer 4
+
+# class                 border  backgr. text    indicator child_border
+client.focused          $color_primary    $color_background $color_foreground $color_primary    $color_primary
+client.focused_inactive $color_background $color_background $color_foreground $color_background $color_background
+client.unfocused        $color_background $color_background $color_foreground $color_background $color_background
+
+# font
+font pango:Cascadia Mono 11
 
 #
 # Status Bar:
@@ -241,28 +261,13 @@ bar {
         statusline $color_foreground
         background $color_background
         inactive_workspace $color_background $color_background $color_foreground
+        active_workspace $color_background $color_background $color_foreground
         focused_workspace $color_primary $color_background $color_foreground
         # urgent_workspace <border> <background> <text>
         urgent_workspace #FF0000 $color_background $color_foreground
         separator $color_primary
     }
 }
-
-#
-# Themes & Colors
-#
-# Window borders
-default_border pixel 1
-for_window [class="^.*"] border pixel 1
-
-# Window gaps
-gaps inner 8
-gaps outer 4
-
-# class                 border  backgr. text    indicator child_border
-client.focused          $color_primary    $color_background $color_foreground $color_primary    $color_primary
-client.focused_inactive $color_background $color_background $color_foreground $color_background $color_background
-client.unfocused        $color_background $color_background $color_foreground $color_background $color_background
 
 #
 # Autostart

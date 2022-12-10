@@ -12,7 +12,7 @@ default-timeout=10000
 # max visible amount of notifications
 max-visible=10
 # font
-font=Fira Code Semibold 10
+font=Cascadia Mono Semibold 11
 # colors
 text-color=#FFFFFF
 background-color=#000000
