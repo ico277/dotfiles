@@ -46,6 +46,18 @@ set $color_foreground #FFFFFF
     bindsym XF86MonBrightnessUp exec brightnessctl set +$bright
     bindsym XF86MonBrightnessDown exec brightnessctl set $bright-
 
+    # power management
+    mode "power" {
+        bindsym $mod+1 exec $HOME/.config/sway/scripts/power.sh battery && swaymsg "mode \"default\""
+        bindsym $mod+2 exec $HOME/.config/sway/scripts/power.sh powersave && swaymsg "mode \"default\""
+        bindsym $mod+3 exec $HOME/.config/sway/scripts/power.sh performance && swaymsg "mode \"default\""
+        bindsym $mod+4 exec $HOME/.config/sway/scripts/power.sh absolute_performance && swaymsg "mode \"default\""
+        # Return to default mode
+#        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+    bindsym $mod+Shift+p mode "power"
+
 #
 # Window Management
 #
