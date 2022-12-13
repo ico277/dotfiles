@@ -26,8 +26,10 @@ set $color_foreground #FFFFFF
     bindsym $mod+Return exec $term
 
     # Use pactl to adjust volume in PulseAudio.
-    bindsym XF86AudioRaiseVolume exec $HOME/.config/sway/scripts/volume.sh +
-    bindsym XF86AudioLowerVolume exec $HOME/.config/sway/scripts/volume.sh -
+    bindsym XF86AudioRaiseVolume exec $HOME/.config/sway/scripts/volume.sh + 2
+    bindsym XF86AudioLowerVolume exec $HOME/.config/sway/scripts/volume.sh - 2
+    bindsym Shift+XF86AudioRaiseVolume exec $HOME/.config/sway/scripts/volume.sh + 10
+    bindsym Shift+XF86AudioLowerVolume exec $HOME/.config/sway/scripts/volume.sh - 10
     bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
     bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
