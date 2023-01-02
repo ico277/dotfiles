@@ -16,6 +16,9 @@ set $color_primary #c413d2
 #set $color_secondary #00213D
 set $color_background #000000
 set $color_foreground #FFFFFF
+# Assign variables for multiple monitors
+set $mon1 DP-2
+set $mon2 DP-3
 
 ### Key bindings
 #
@@ -41,8 +44,10 @@ set $color_foreground #FFFFFF
     # start launcher
     bindsym $mod+Shift+d exec $menu
 
-    # flameshot
-    bindsym $mod+Shift+s exec flameshot gui
+    # screenshot
+#    bindsym $mod+Shift+s exec flameshot gui
+    bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
+    bindsym $mod+Ctrl+s exec grim -g "$(slurp -o)" - | wl-copy
 
     # backlight
     bindsym XF86MonBrightnessUp exec brightnessctl set +$bright
@@ -86,6 +91,19 @@ set $color_foreground #FFFFFF
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
 
+    # Assign workspaces for different monitors
+    # First 5 workspaces for $mon1 and the other 5 for $mon2
+    workspace "1" output $mon1
+    workspace "2" output $mon1
+    workspace "3" output $mon1
+    workspace "4" output $mon1
+    workspace "5" output $mon1
+    # Still assign all workspaces to $mod+number in case of only using 1 monitor
+    workspace "6" output $mon2
+    workspace "7" output $mon2
+    workspace "8" output $mon2
+    workspace "9" output $mon2
+    workspace "10" output $mon2
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
@@ -108,8 +126,56 @@ set $color_foreground #FFFFFF
     bindsym $mod+Shift+8 move container to workspace number 8
     bindsym $mod+Shift+9 move container to workspace number 9
     bindsym $mod+Shift+0 move container to workspace number 10
-    # Note: workspaces can have any name you want, not just numbers.
-    # We just use 1-10 as the default.
+
+    # mode for switching workspaces on $mon2
+    mode "Monitor 2" {
+        # These bindings are for switching workspaces on $mon2
+        # Workspaces 6-10 for the 2nd monitor
+        bindsym $mod+1 workspace number 6
+        bindsym $mod+2 workspace number 7
+        bindsym $mod+3 workspace number 8
+        bindsym $mod+4 workspace number 9
+        bindsym $mod+5 workspace number 10
+
+        # Move focused container to workspace
+        bindsym $mod+Shift+1 move container to workspace number 6
+        bindsym $mod+Shift+2 move container to workspace number 7
+        bindsym $mod+Shift+3 move container to workspace number 8
+        bindsym $mod+Shift+4 move container to workspace number 9
+        bindsym $mod+Shift+5 move container to workspace number 10
+
+        # bemenu
+        bindsym $mod+Shift+d exec $menu
+
+        # Moving focus to windows
+        bindsym $mod+Left focus left
+        bindsym $mod+Down focus down
+        bindsym $mod+Up focus up
+        bindsym $mod+Right focus right
+
+        # move focused window
+        bindsym $mod+Shift+Left move left
+        bindsym $mod+Shift+Down move down
+        bindsym $mod+Shift+Up move up
+        bindsym $mod+Shift+Right move right
+
+        # Switch the current container between different layout styles
+        bindsym $mod+s layout stacking
+        bindsym $mod+w layout tabbed
+        bindsym $mod+e layout toggle split
+
+        # toggle tiling / floating
+        bindsym $mod+Shift+space floating toggle
+
+        # change focus between tiling / floating windows
+        bindsym $mod+space focus mode_toggle
+
+        # There has to be a way to escape
+        #bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+Shift+w mode "default"
+    }
+    bindsym $mod+Shift+w mode "Monitor 2"
 
     # You can "split" the current object of your focus with
     # $mod+b or $mod+v, for horizontal and vertical splits
@@ -225,7 +291,7 @@ input "2:14:ETPS/2_Elantech_TrackPoint" {
 # Logitech Mouse config
 input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
     accel_profile flat
-    pointer_accel -0.2
+    pointer_accel -0.3
     dwt disabled
 }
 # Other Logitech Mouse config
@@ -286,6 +352,10 @@ bar {
 #
 # Autostart
 #
+# dbus
+exec --no-startup-id dbus-update-activation-environment --all
+# Start XDG autostart .desktop files using dex.
+exec --no-startup-id dex --autostart --environment sway
 # notification daemon
 exec_always $HOME/.config/sway/scripts/restart.sh mako
 # flameshot for screenshots
