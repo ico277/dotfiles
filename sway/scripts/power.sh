@@ -1,16 +1,16 @@
 #!/bin/sh
 
-file="/etc/default/cpupower"
-while IFS="=" read -r key value; do
-    case "$key" in
-    '#'*) ;;
-    *)
-        eval "$key=\"$value\""
-    esac
-done < "$file"
+#file="/etc/default/cpupower"
+#while IFS="=" read -r key value; do
+#    case "$key" in
+#    '#'*) ;;
+#    *)
+#        eval "$key=\"$value\""
+#    esac
+#done < "$file"
 
 if [ "$1" == "battery" ] ; then
-    pkexec sh -c "cpupower frequency-set --min $min_freq --max $max_freq -g $governor && cpupower set --perf-bias $perf_bias"
+    pkexec sh -c "cpupower frequency-set --min 500mhz --max 3ghz -g $governor && cpupower set --perf-bias $perf_bias"
     notify-send -i battery --app-name "$0" "Changed power mode to '$1'"
 elif [ "$1" == "performance" ] ; then
     #pkexec cpupower frequency-set --min 800ghz --max 3.5ghz #-g performance
