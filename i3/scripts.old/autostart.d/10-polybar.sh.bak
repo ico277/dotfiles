@@ -1,0 +1,2 @@
+# Start polybar using start script
+$HOME/.config/polybar/start.sh i3bar
