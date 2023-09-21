@@ -1,5 +1,10 @@
 #!/bin/sh
-cmd="powerprofilesctl set $1"
+
+profile="$1"
+if [ ! "$profile" ] ; then
+    profile="$(printf "performance\nbalanced\npower-saver" | bemenu)"
+fi
+cmd="powerprofilesctl set $profile"
 $cmd
 if [ ! "$?" == "0" ] ; then
     notify-send "Error running '$cmd'!"
@@ -8,5 +13,5 @@ if [ ! "$?" == "0" ] ; then
         $cmd
     fi
 else
-    notify-send "Power profile succsessfully set to '$1'!"
+    notify-send "Power profile succsessfully set to '$profile'!"
 fi
