@@ -1,8 +1,9 @@
 #!/bin/sh
 
 profile="$1"
+current="$(powerprofilesctl get)"
 if [ ! "$profile" ] ; then
-    profile="$(printf "performance\nbalanced\npower-saver" | bemenu)"
+    profile="$(printf "performance\nbalanced\npower-saver" | grep -v "$current" | bemenu --prompt "$current ->")"
 fi
 cmd="powerprofilesctl set $profile"
 $cmd
