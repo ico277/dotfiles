@@ -7,12 +7,11 @@ if [ ! "$profile" ] ; then
 fi
 cmd="powerprofilesctl set $profile"
 $cmd
+current="$(powerprofilesctl get)"
 if [ ! "$?" == "0" ] ; then
     notify-send "Error running '$cmd'!"
-    if [ "$2" == "1" ] ; then
-        pkexec systemctl restart power-profiles-daemon
-        $cmd
-    fi
+elif [ "$profile" == "$current" ] ; then
+    notify-send "Power profile succsessfully set to '$(powerprofilesctl get)'!"
 else
-    notify-send "Power profile succsessfully set to '$profile'!"
+    notify-send "Power profile is set to '$(powerprofilesctl get)'!"
 fi

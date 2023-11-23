@@ -1,4 +1,4 @@
 #!/bin/sh
 
-exec $(bemenu-run --no-exec --prompt "exec")
+exec sh -c "$(bemenu-run --no-exec --prompt "exec")"
 
