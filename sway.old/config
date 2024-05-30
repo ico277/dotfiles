@@ -8,7 +8,7 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu $HOME/.config/sway/scripts/exec_menu.sh
+set $menu bemenu-run
 # Brightness value
 set $bright 5%
 # Colors
@@ -40,36 +40,30 @@ set $mon2 DP-3
     bindsym XF86AudioPlay exec playerctl play-pause
     bindsym XF86AudioNext exec playerctl next
     bindsym XF86AudioPrev exec playerctl previous
-    # laptop
-    bindsym Cancel exec playerctl play-pause
-    bindsym XF86Favorites exec playerctl next
-    bindsym XF86Go exec playerctl previous
 
     # start launcher
-    bindsym $mod+d exec $menu
-    bindsym Mod1+space exec $menu
+    bindsym $mod+Shift+d exec $menu
 
     # screenshot
-    bindsym $mod+Shift+s exec env QT_SCREEN_SCALE_FACTORS="$(swaymsg -t get_outputs | jq 'map(select(.focused == true) | {type, focused, scale}) | .[0].scale | if . then . else 1 end | 1 / .')" flameshot gui
-#    bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
-#    bindsym $mod+Ctrl+s exec grim -g "$(slurp -o)" - | wl-copy
+#    bindsym $mod+Shift+s exec flameshot gui
+    bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
+    bindsym $mod+Ctrl+s exec grim -g "$(slurp -o)" - | wl-copy
 
     # backlight
     bindsym XF86MonBrightnessUp exec brightnessctl set +$bright
     bindsym XF86MonBrightnessDown exec brightnessctl set $bright-
 
     # power management
-#    mode "power" {
-#        bindsym $mod+1 exec $HOME/.config/sway/scripts/power.sh battery && swaymsg "mode \"default\""
-#        bindsym $mod+2 exec $HOME/.config/sway/scripts/power.sh powersave && swaymsg "mode \"default\""
-#        bindsym $mod+3 exec $HOME/.config/sway/scripts/power.sh performance && swaymsg "mode \"default\""
-#        bindsym $mod+4 exec $HOME/.config/sway/scripts/power.sh absolute_performance && swaymsg "mode \"default\""
-#        # Return to default mode
-##        bindsym Return mode "default"
-#        bindsym Escape mode "default"
-#    }
-#    bindsym $mod+Shift+p mode "power"
-    bindsym $mod+Shift+p exec $HOME/.config/sway/scripts/powermenu.sh
+    mode "power" {
+        bindsym $mod+1 exec $HOME/.config/sway/scripts/power.sh battery && swaymsg "mode \"default\""
+        bindsym $mod+2 exec $HOME/.config/sway/scripts/power.sh powersave && swaymsg "mode \"default\""
+        bindsym $mod+3 exec $HOME/.config/sway/scripts/power.sh performance && swaymsg "mode \"default\""
+        bindsym $mod+4 exec $HOME/.config/sway/scripts/power.sh absolute_performance && swaymsg "mode \"default\""
+        # Return to default mode
+#        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+    bindsym $mod+Shift+p mode "power"
 
 #
 # Window Management
@@ -83,7 +77,7 @@ set $mon2 DP-3
     floating_modifier $mod normal
 
     # Kill focused window
-    bindsym $mod+q kill
+    bindsym $mod+Shift+q kill
 
     # Move your focus around
     bindsym $mod+Left focus left
@@ -150,9 +144,8 @@ set $mon2 DP-3
         bindsym $mod+Shift+4 move container to workspace number 9
         bindsym $mod+Shift+5 move container to workspace number 10
 
-        # start launcher
-        bindsym $mod+d exec $menu
-        bindsym Mod1+space exec $menu
+        # bemenu
+        bindsym $mod+Shift+d exec $menu
 
         # Moving focus to windows
         bindsym $mod+Left focus left
@@ -249,7 +242,7 @@ bindsym $mod+r mode "resize"
     bindsym $mod+Shift+r restart
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+m exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 ### Output configuration
 #
@@ -258,11 +251,10 @@ output * bg $HOME/.config/sway/wallpaper/wallpaper.png fill
 #
 # Example configuration:
 #
-output eDP-1 resolution 1920x1080@60hz scale 1.25
-#output HDMI-A-1 modeline 210.25 1920 2056 2256 2592  1080 1083 1088 1128 -hsync +vsync 
-#output DP-3 resolution 1920x1080@60hz position 1920,0
-#output DP-2 resolution 1920x1080@144hz adaptive_sync on
-
+output eDP-1 resolution 1920x1080@60hz scale 1.20
+output HDMI-A-1 modeline 210.25 1920 2056 2256 2592  1080 1083 1088 1128 -hsync +vsync 
+output DP-3 resolution 1920x1080@60hz position 1920,0
+output DP-2 resolution 1920x1080@144hz adaptive_sync on
 #
 # You can get the names of your outputs by running: swaymsg -t get_outputs
 
@@ -289,8 +281,6 @@ input type:touchpad {
     natural_scroll enabled
     #middle_emulation enabled
 }
-bindgesture swipe:left workspace next
-bindgesture swipe:right workspace prev
 # Trackpoint config
 input "2:14:ETPS/2_Elantech_TrackPoint" {
     accel_profile flat
@@ -338,47 +328,43 @@ font pango:Cascadia Mono 11
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-#bar {
-#    position top
-#
-#    # When the status_command prints a new line to stdout, swaybar updates.
-#    # The default just shows the current date and time.
-#    #status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
-#    # Use i3status for the status command
-#    status_command i3statu
-#
-#    colors {
-#        statusline $color_foreground
-#        background $color_background
-#        inactive_workspace $color_background $color_background $color_foreground
-#        active_workspace $color_background $color_background $color_foreground
-#        focused_workspace $color_primary $color_background $color_foreground
-#        # urgent_workspace <border> <background> <text>
-#        urgent_workspace #FF0000 $color_background $color_foreground
-#        separator $color_primary
-#    }
-#}
+bar {
+    position top
+
+    # When the status_command prints a new line to stdout, swaybar updates.
+    # The default just shows the current date and time.
+    #status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    # Use i3status for the status command
+    status_command i3status
+
+    colors {
+        statusline $color_foreground
+        background $color_background
+        inactive_workspace $color_background $color_background $color_foreground
+        active_workspace $color_background $color_background $color_foreground
+        focused_workspace $color_primary $color_background $color_foreground
+        # urgent_workspace <border> <background> <text>
+        urgent_workspace #FF0000 $color_background $color_foreground
+        separator $color_primary
+    }
+}
 
 #
 # Autostart
 #
 # dbus
 exec --no-startup-id dbus-update-activation-environment --all
+# Start XDG autostart .desktop files using dex.
+exec --no-startup-id dex --autostart --environment sway
 # notification daemon
 exec_always $HOME/.config/sway/scripts/restart.sh mako
-# polkit agent
-exec_always $HOME/.config/sway/scripts/restart.sh /usr/lib/xfce-polkit/xfce-polkit 
-# xdg-desktop-portal
-exec_always $HOME/.config/sway/scripts/restart.sh /usr/lib/xdg-desktop-portal-wlr
-# nm-applet
-exec_always $HOME/.config/sway/scripts/restart.sh nm-applet
+# flameshot for screenshots
+exec_always $HOME/.config/sway/scripts/restart.sh flameshot
 # blueman for bluetooth
 exec_always $HOME/.config/sway/scripts/restart.sh blueman-applet
 # easyeffects
 exec_always $HOME/.config/sway/scripts/restart.sh easyeffects --gapplication-service 
-# waybar
-exec_always $HOME/.config/sway/scripts/restart.sh waybar -c ~/.config/sway/waybar.conf -s ~/.config/sway/waybar.css
-# Start XDG autostart .desktop files using dex.
-exec --no-startup-id dex --autostart --environment sway
+# dumb polkit agent
+exec_always $HOME/.config/sway/scripts/restart.sh polkit-dumb-agent 
 
 include /etc/sway/config.d/*
