@@ -12,12 +12,12 @@ if [ "$?" != "0" ] ; then
     exit 1
 fi
 
-current="$(SUDO auto-ryzenadjctl status | grep "profile" | awk -F " -> " '{print $2}')"
-profiles="$(SUDO auto-ryzenadjctl profiles | awk -F ":" '{print $1}')"
+current="$(SUDO auto-ryzenadjctl --status | grep "profile" | awk -F ":" '{print $2}')"
+profiles="$(SUDO auto-ryzenadjctl --listprofiles | awk -F ":" '{print $1}')"
 selection="$(bemenu --prompt "$current ->" <<< $profiles)"
 
-SUDO auto-ryzenadjctl set profile $selection
+SUDO auto-ryzenadjctl --setprofile $selection
 sleep 1
-current="$(SUDO auto-ryzenadjctl status | grep "profile" | awk -F " -> " '{print $2}')"
+current="$(SUDO auto-ryzenadjctl --status | grep "profile" | awk -F ":" '{print $2}')"
 notify-send "Set ryzenadj profile to $current!"
 

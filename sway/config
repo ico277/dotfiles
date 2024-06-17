@@ -17,8 +17,8 @@ set $color_primary #c413d2
 set $color_background #000000
 set $color_foreground #FFFFFF
 # Assign variables for multiple monitors
-set $mon1 DP-2
-set $mon2 DP-3
+set $mon1 eDP-1
+set $mon2 HDMI-A-1
 
 ### Key bindings
 #
@@ -50,8 +50,8 @@ set $mon2 DP-3
     bindsym Mod1+space exec $menu
 
     # screenshot
-    bindsym $mod+Shift+s exec env QT_SCREEN_SCALE_FACTORS="$(swaymsg -t get_outputs | jq 'map(select(.focused == true) | {type, focused, scale}) | .[0].scale | if . then . else 1 end | 1 / .')" flameshot gui
-#    bindsym $mod+Shift+s exec grim -g "$(slurp)" - | wl-copy
+    #bindsym $mod+Shift+s exec env QT_SCREEN_SCALE_FACTORS="$(swaymsg -t get_outputs | jq 'map(select(.focused == true) | {type, focused, scale}) | .[0].scale | if . then . else 1 end | 1 / .')" flameshot gui
+    bindsym $mod+Shift+s exec grimshot copy anything
 #    bindsym $mod+Ctrl+s exec grim -g "$(slurp -o)" - | wl-copy
 
     # backlight
@@ -70,6 +70,7 @@ set $mon2 DP-3
 #    }
 #    bindsym $mod+Shift+p mode "power"
     bindsym $mod+Shift+p exec $HOME/.config/sway/scripts/powermenu.sh
+    bindsym $mod+Shift+l exec $HOME/.config/sway/scripts/sleepmenu.sh
 
 #
 # Window Management
@@ -253,12 +254,14 @@ bindsym $mod+r mode "resize"
 
 ### Output configuration
 #
-# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg $HOME/.config/sway/wallpaper/wallpaper.png fill
+# Default wallpaper 
+output * bg $HOME/.config/sway/wallpaper/synth_wallpaper2.png fill
+output $mon2 bg $HOME/.config/sway/wallpaper/synth_wallpaper1.png fill
 #
 # Example configuration:
 #
 output eDP-1 resolution 1920x1080@60hz scale 1.25
+output HDMI-A-1 resolution 1920x1080@144hz
 #output HDMI-A-1 modeline 210.25 1920 2056 2256 2592  1080 1083 1088 1128 -hsync +vsync 
 #output DP-3 resolution 1920x1080@60hz position 1920,0
 #output DP-2 resolution 1920x1080@144hz adaptive_sync on
@@ -308,6 +311,12 @@ input "1133:49291:Logitech_G502_HERO_Gaming_Mouse" {
 input "1133:49278:Logitech_Gaming_Mouse_G402" {
     accel_profile flat
     pointer_accel 0
+    dwt disabled
+}
+# Logitech wireless Mouse config
+input "1133:50503:Logitech_USB_Receiver" {
+    accel_profile flat
+    pointer_accel -0.5
     dwt disabled
 }
 # Keyboard layout
